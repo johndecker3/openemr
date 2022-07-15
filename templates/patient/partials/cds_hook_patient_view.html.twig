@@ -1,0 +1,25 @@
+{#
+The Patient Portal card for the Medical Record Dashboard
+
+@author       Robert Down <robertdown@live.com>
+@copyright    Copyright (c) 2022 Robert Down <robertdown@live.com>
+@package      OpenEMR
+#}
+
+{% extends "patient/card/card_base.html.twig" %}
+
+{% if (prependedInjection is defined) or (appendedInjection is defined) %}
+    {% import "patient/macros/card.macro.twig" as cardMacros %}
+    {% set prepend = cardMacros.injectedContent(prependedInjection) %}
+    {% set append = cardMacros.injectedContent(appendedInjection) %}
+{% endif %}
+
+
+{% block content %}
+<div class="text d-flex pl-1">
+        {{ prepend }}
+        <div>Title</div>
+        <div>Detail</div>
+        {{ append }}
+</div>
+{% endblock %}

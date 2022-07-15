@@ -45,6 +45,7 @@ use OpenEMR\FHIR\SMART\SmartLaunchController;
 use OpenEMR\Menu\PatientMenuRole;
 use OpenEMR\OeUI\OemrUI;
 use OpenEMR\Patient\Cards\PortalCard;
+use OpenEMR\Patient\Cards\CDSHookCard;
 use OpenEMR\Reminder\BirthdayReminder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -1328,6 +1329,8 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                     if ($GLOBALS['portal_onsite_two_enable']) :
                         $portalCard = new PortalCard($GLOBALS);
                     endif;
+                    
+                    $cdsHookCard = new CDSHookCard($GLOBALS);
 
                     $sectionRenderEvents = $ed->dispatch(SectionEvent::EVENT_HANDLE, new SectionEvent('secondary'));
                     $sectionCards = $sectionRenderEvents->getCards();
