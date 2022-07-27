@@ -60,8 +60,6 @@ class CDSHookCard extends CardModel
     private function renderCard()
     {
         $dispatchResult = $this->ed->dispatch(RenderEvent::EVENT_HANDLE, new RenderEvent(self::CARD_ID));
-        $this->opts['templateVariables']['prependedInjection'] = $dispatchResult->getPrependedInjection();
-        $this->opts['templateVariables']['appendedInjection'] = $dispatchResult->getAppendedInjection();
     }
 
     private function setOpts()
@@ -76,10 +74,10 @@ class CDSHookCard extends CardModel
             'collapse' => true,
             'templateFile' => self::TEMPLATE_FILE,
             'identifier' => self::CARD_ID,
-            'title' => xl('CDS Hook'),
+            'title' => xl('Renal Failure Medication Alert'),
             'templateVariables' => [
-                'summary' => '',
-                'detail' => '',
+                'summary' => 'Potential Medication Issue : IBUPROFEN',
+                'detail' => 'Current research suggests IBUPROFEN should be limited for patients with renal issues.',
                 'indicator' => '',
                 'source' => [
                     'label' => '',
@@ -87,8 +85,8 @@ class CDSHookCard extends CardModel
                     'icon' => ''
                 ],
                 'links' => [
-                    'label' => '',
-                    'url' => '',
+                    'label' => 'More Info',
+                    'url' => 'https://renaldrugdatabase.com/monographs/ibuprofen',
                     'type' => '',
                     'appcontext' => ''
                 ]

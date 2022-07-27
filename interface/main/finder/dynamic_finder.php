@@ -274,7 +274,7 @@ $loading = "<div class='spinner-border' role='status'><span class='sr-only'>" . 
             "columns": [ <?php echo $coljson; ?> ],
             "order": [ <?php echo $orderjson; ?> ],
             "lengthMenu": [10, 25, 50, 100],
-            "pageLength": <?php echo empty($GLOBALS['gbl_pt_list_page_size']) ? '10' : $GLOBALS['gbl_pt_list_page_size']; ?>,
+            "pageLength": <?php echo empty($GLOBALS['gbl_pt_list_page_size']) ? '100' : $GLOBALS['gbl_pt_list_page_size']; ?>,
             <?php // Bring in the translations ?>
             <?php $translationsDatatablesOverride = array('search' => (xla('Search all columns') . ':')); ?>
             <?php $translationsDatatablesOverride = array('processing' => $loading); ?>

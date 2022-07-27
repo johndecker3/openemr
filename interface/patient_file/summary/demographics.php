@@ -1330,7 +1330,8 @@ $oemr_ui = new OemrUI($arrOeUiSettings);
                         $portalCard = new PortalCard($GLOBALS);
                     endif;
                     
-                    $cdsHookCard = new CDSHookCard($GLOBALS);
+                    if($pid == 8)
+                        $cdsHookCard = new CDSHookCard($GLOBALS);
 
                     $sectionRenderEvents = $ed->dispatch(SectionEvent::EVENT_HANDLE, new SectionEvent('secondary'));
                     $sectionCards = $sectionRenderEvents->getCards();

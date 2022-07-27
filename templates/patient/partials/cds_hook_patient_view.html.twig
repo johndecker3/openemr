@@ -16,10 +16,15 @@ The Patient Portal card for the Medical Record Dashboard
 
 
 {% block content %}
-<div class="text d-flex pl-1">
+<div class="text">
         {{ prepend }}
-        <div>Title</div>
-        <div>Detail</div>
+        <div class="px-1 text d-block"> <i class="fa fa-exclamation-circle" style="font-size:14px; color: red"></i> {{ summary|text }}</div>
+        <div class="px-1 text d-block small text-muted">
+            {{ detail|text }}
+            {% if (links is defined) %}
+                <a href="{{ links['url']|attr }}" target="_blank">{{ links['label']|text }}</a>
+            {% endif %}
+        </div>
         {{ append }}
 </div>
 {% endblock %}
