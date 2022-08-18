@@ -19,7 +19,6 @@
 require_once("../globals.php");
 require_once("$srcdir/calendar.inc");
 require_once("$srcdir/options.inc.php");
-require_once("$srcdir/erx_javascript.inc.php");
 
 use OpenEMR\Common\Acl\AclExtended;
 use OpenEMR\Common\Acl\AclMain;
@@ -30,6 +29,7 @@ use OpenEMR\Menu\MainMenuRole;
 use OpenEMR\Menu\PatientMenuRole;
 use OpenEMR\Services\FacilityService;
 use OpenEMR\Services\UserService;
+use OpenEMR\Events\User\UserEditRenderEvent;
 
 if (!empty($_GET)) {
     if (!CsrfUtils::verifyCsrfToken($_GET["csrf_token_form"])) {
@@ -59,7 +59,7 @@ $iter = $result[0];
 <html>
 <head>
 
-<?php Header::setupHeader(['common','opener']); ?>
+<?php Header::setupHeader(['common','opener', 'erx']); ?>
 
 <script src="checkpwd_validation.js"></script>
 
@@ -279,6 +279,17 @@ function toggle_password() {
 <input type=hidden name="user_type" value="<?php echo attr($bg_name); ?>" >
 
 <TABLE border=0 cellpadding=0 cellspacing=0>
+<tr>
+    <td colspan="4">
+        <?php
+        // TODO: we eventually want to move to a responsive layout and not use tables here.  So we are going to give
+        // module writers the ability to inject divs, tables, or whatever inside the cell instead of having them
+        // generate additional rows / table columns which locks us into that format.
+        $preRenderEvent = new UserEditRenderEvent('user_admin.php', $_GET['id']);
+        $GLOBALS['kernel']->getEventDispatcher()->dispatch($preRenderEvent, UserEditRenderEvent::EVENT_USER_EDIT_RENDER_BEFORE);
+        ?>
+    </td>
+</tr>
 <TR>
     <TD style="width:180px;"><span class=text><?php echo xlt('Username'); ?>: </span></TD>
     <TD style="width:270px;"><input type="text" name=username style="width:150px;" class="form-control" value="<?php echo attr($iter["username"]); ?>" disabled></td>
@@ -606,6 +617,18 @@ foreach ($list_acl_groups as $value) {
 
         </td>
     </tr>
+    <tr>
+        <td colspan="4">
+            <?php
+            // TODO: we eventually want to move to a responsive layout and not use tables here.  So we are going to give
+            // module writers the ability to inject divs, tables, or whatever inside the cell instead of having them
+            // generate additional rows / table columns which locks us into that format.
+            $postRenderEvent = new UserEditRenderEvent('user_admin.php', $_GET['id']);
+            $GLOBALS['kernel']->getEventDispatcher()->dispatch($postRenderEvent, UserEditRenderEvent::EVENT_USER_EDIT_RENDER_AFTER);
+            ?>
+        </td>
+    </tr>
+
   <tr height="20" valign="bottom">
   <td colspan="4" class="text">
       <p>*<?php echo xlt('You must enter your own password to change user passwords. Leave blank to keep password unchanged.'); ?></p>
