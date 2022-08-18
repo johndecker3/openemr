@@ -63,6 +63,7 @@ switch ($search_any_type) {
                 <!-- ko if: patient -->
                 <?php
                 $classes = "";
+                $showpid = true;
                 switch ($GLOBALS['patient_name_display']) :
                     case 'btn':
                         $classes = "btn btn-sm btn-secondary";
@@ -74,6 +75,16 @@ switch ($search_any_type) {
                         $pubpidElement = 'span';
                         break;
                     case 'text-large':
+                        $closeAnchorClasses = 'text-muted';
+                        $wrapperElement = 'h3';
+                        $wrapperElementClass = 'd-inline';
+                        $closeElement = 'small';
+                        $closeElementClass = '';
+                        $closeIconClass = 'text-muted fa-xs';
+                        $pubpidElement = 'small';
+                        break;
+                    case 'text-name-only':
+                        $showpid = false;
                         $closeAnchorClasses = 'text-muted';
                         $wrapperElement = 'h3';
                         $wrapperElementClass = 'd-inline';
@@ -97,7 +108,9 @@ switch ($search_any_type) {
 
                     <a class="ptName <?php echo $classes ?? ''; ?> " data-bind="click:refreshPatient,with: patient" href="#" title="<?php echo xla("To Dashboard") ?>">
                         <span data-bind="text: pname()"></span>
-                        <<?php echo $pubpidElement;?> class="text-muted">(<span data-bind="text: pubpid"></span>)</<?php echo $pubpidElement;?>>
+                        <?php if($showpid) { ?>
+                            <<?php echo $pubpidElement;?> class="text-muted">(<span data-bind="text: pubpid"></span>)</<?php echo $pubpidElement;?>>
+                        <?php }?>
                     </a>
                     <?php echo ($closeElement !== '') ? "<$closeElement class=\"$closeElementClass\">" : ''; ?>
                     <a href="#" class="pt-1<?php echo (($classes ?? '') !== "") ? " " . $classes : "";?> <?php echo ($closeAnchorClasses !== "") ? " " . $closeAnchorClasses : ""; ?>" data-bind="click:clearPatient" title="<?php echo xla("Close Patient Chart") ?>">

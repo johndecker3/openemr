@@ -4073,8 +4073,9 @@ $GLOBALS_METADATA = array(
                 'btn' => xl('As Button'),
                 'text' => xl('As Text Link'),
                 'text-large' => xl('As Large Text Link'),
+                'text-name-only' => xl('As Large Text Link with No Patient ID'), //TODO:  Figure out how to appropriately add to language constants
             ],
-            'text-large',
+            'text-name-only',
             xl('How to display the patient name'),
         ],
     ],
