@@ -76,8 +76,8 @@ class CDSHookCard extends CardModel
             'identifier' => self::CARD_ID,
             'title' => xl('Renal Failure Medication Alert'),
             'templateVariables' => [
-                'summary' => 'Potential Medication Issue : IBUPROFEN',
-                'detail' => 'Current research suggests IBUPROFEN should be limited for patients with renal issues.',
+                'summary' => 'Potential Medication Issue : METFORMIN',
+                'detail' => 'Current research suggests that patients with a GFR result between 10 to 45 (mL/min) should have 25% of normal dosage for METFORMIN.',
                 'indicator' => '',
                 'source' => [
                     'label' => '',
@@ -86,7 +86,7 @@ class CDSHookCard extends CardModel
                 ],
                 'links' => [
                     'label' => 'More Info',
-                    'url' => 'https://renaldrugdatabase.com/monographs/ibuprofen',
+                    'url' => 'https://renaldrugdatabase.com/monographs/metformin-hydrochloride',
                     'type' => '',
                     'appcontext' => ''
                 ]

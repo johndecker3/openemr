@@ -19,6 +19,10 @@
     function my_process_lookup(drug, rxcode = '') {
       // Pass the variable
       let newOption = new Option(drug, drug, true, true);
+      if($("input[name='patient_id']").val() == 84 && drug.toLowerCase().indexOf('ibuprofen') >= 0 )
+      {
+        $('#prescriptionAlert').modal();
+      }
       $("#rxnorm_drugcode").val(rxcode);
       $('#drug').append(newOption).trigger('change');
       $('#hiddendiv').hide();
@@ -90,6 +94,24 @@
 {/literal}
 </head>
 <body id="prescription_edit">
+    <div class="modal" id="prescriptionAlert" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+                 <h5 class="modal-title"><i class="fa fa-exclamation-circle" style="color: red"></i> Prescription Alert</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Current research suggests IBUPROFEN should be limited for patients with renal issues. <a href="https://renaldrugdatabase.com/monographs/ibuprofen" target="_blank">More Info</a></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
 <div class="container">
     <form name="prescribe" id="prescribe"  method="post" action="{$FORM_ACTION}" >
         <table>

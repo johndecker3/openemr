@@ -239,51 +239,6 @@ foreach (['treatment_protocols', 'injury_log'] as $formname) {
         }
     }
 }
-
-// Render the Immunizations card if turned on
-if (!$GLOBALS['disable_immunizations'] && !$GLOBALS['weight_loss_clinic']) :
-    $sql = "SELECT i1.id AS id, i1.immunization_id AS immunization_id, i1.cvx_code AS cvx_code, c.code_text_short AS cvx_text,
-                IF(i1.administered_date, concat(i1.administered_date,' - ',c.code_text_short),
-                IF(i1.note,substring(i1.note,1,20),c.code_text_short)) AS immunization_data
-            FROM immunizations i1
-            LEFT JOIN code_types ct ON ct.ct_key = 'CVX'
-            LEFT JOIN codes c ON c.code_type = ct.ct_id AND i1.cvx_code = c.code
-            WHERE i1.patient_id = ?
-                AND i1.added_erroneously = 0
-            ORDER BY i1.administered_date DESC";
-    $result = sqlStatement($sql, [$pid]);
-
-    $imxList = [];
-    while ($row = sqlFetchArray($result)) {
-        $row['immunization_data'] = text($row['immunization_data']);
-
-        // Figure out which name to use (ie. from cvx list or from the custom list)
-        if ($GLOBALS['use_custom_immun_list']) {
-            $row['field'] = generate_display_field(array('data_type' => '1', 'list_id' => 'immunizations'), $row['immunization_id']);
-        } else {
-            if (!(empty($row['cvx_text']))) {
-                $row['field'] = htmlspecialchars(xl($row['cvx_text']), ENT_NOQUOTES);
-            } else {
-                $row['field'] = generate_display_field(array('data_type' => '1', 'list_id' => 'immunizations'), $row['immunization_id']);
-            }
-        }
-
-        $row['url'] = attr_js("immunizations.php?mode=edit&id=" . urlencode($row['id']) . "&csrf_token_form=" . urlencode(CsrfUtils::collectCsrfToken()));
-        $imxList[] = $row;
-    }
-    $id = "immunizations_ps_expand";
-    echo $t->render('patient/card/immunizations.html.twig', [
-        'title' => xl('Immunizations'),
-        'id' => $id,
-        'initiallyCollapsed' => (getUserSetting($id) == 0) ? false : true,
-        'btnLabel' => 'Edit',
-        'btnLink' => 'immunizations.php',
-        'linkMethod' => 'html',
-        'auth' => true,
-        'imx' => $imxList,
-    ]);
-endif; // End immunizations
-
 // Render the Prescriptions card if turned on
 if (!$GLOBALS['disable_prescriptions'] && AclMain::aclCheckCore('patients', 'rx')) :
     if ($GLOBALS['erx_enable'] && $display_current_medications_below == 1) {
@@ -353,6 +308,51 @@ if (!$GLOBALS['disable_prescriptions'] && AclMain::aclCheckCore('patients', 'rx'
 
     echo $t->render('patient/card/rx.html.twig', $viewArgs);
 endif;
+
+
+// Render the Immunizations card if turned on
+if (!$GLOBALS['disable_immunizations'] && !$GLOBALS['weight_loss_clinic']) :
+    $sql = "SELECT i1.id AS id, i1.immunization_id AS immunization_id, i1.cvx_code AS cvx_code, c.code_text_short AS cvx_text,
+                IF(i1.administered_date, concat(i1.administered_date,' - ',c.code_text_short),
+                IF(i1.note,substring(i1.note,1,20),c.code_text_short)) AS immunization_data
+            FROM immunizations i1
+            LEFT JOIN code_types ct ON ct.ct_key = 'CVX'
+            LEFT JOIN codes c ON c.code_type = ct.ct_id AND i1.cvx_code = c.code
+            WHERE i1.patient_id = ?
+                AND i1.added_erroneously = 0
+            ORDER BY i1.administered_date DESC";
+    $result = sqlStatement($sql, [$pid]);
+
+    $imxList = [];
+    while ($row = sqlFetchArray($result)) {
+        $row['immunization_data'] = text($row['immunization_data']);
+
+        // Figure out which name to use (ie. from cvx list or from the custom list)
+        if ($GLOBALS['use_custom_immun_list']) {
+            $row['field'] = generate_display_field(array('data_type' => '1', 'list_id' => 'immunizations'), $row['immunization_id']);
+        } else {
+            if (!(empty($row['cvx_text']))) {
+                $row['field'] = htmlspecialchars(xl($row['cvx_text']), ENT_NOQUOTES);
+            } else {
+                $row['field'] = generate_display_field(array('data_type' => '1', 'list_id' => 'immunizations'), $row['immunization_id']);
+            }
+        }
+
+        $row['url'] = attr_js("immunizations.php?mode=edit&id=" . urlencode($row['id']) . "&csrf_token_form=" . urlencode(CsrfUtils::collectCsrfToken()));
+        $imxList[] = $row;
+    }
+    $id = "immunizations_ps_expand";
+    echo $t->render('patient/card/immunizations.html.twig', [
+        'title' => xl('Immunizations'),
+        'id' => $id,
+        'initiallyCollapsed' => (getUserSetting($id) == 0) ? false : true,
+        'btnLabel' => 'Edit',
+        'btnLink' => 'immunizations.php',
+        'linkMethod' => 'html',
+        'auth' => true,
+        'imx' => $imxList,
+    ]);
+endif; // End immunizations
 
 // Render Old Medications card
 if ($erx_upload_complete == 1) {
