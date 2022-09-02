@@ -43,9 +43,9 @@ left_nav.setPatient = function(pname, pid, pubpid, frname, str_dob)
         top.document.title = WindowTitleBase + " - " + pname;
     }
 
-    navigateTab(webroot_url+"/interface/patient_file/history/encounters.php","enc", function () {
-        tabCloseByName('rev');
-    });
+    //navigateTab(webroot_url+"/interface/patient_file/history/encounters.php","enc", function () {
+    //    tabCloseByName('rev');
+    //});
 
     /* close therapy group tabs */
     tabCloseByName('gdg');

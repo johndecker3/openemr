@@ -171,7 +171,8 @@ function checkAll(bx) {
                                         $tab = 0;
                                         echo "<td>";
 
-                                        $spell  = "SELECT DISTINCT procedure_result.result_code AS value_code ";
+                                        $spell  = "SELECT procedure_result.result_code AS value_code, ";
+                                        $spell .= "procedure_result.result_text AS value_text ";
                                         $spell .= "FROM procedure_result ";
                                         $spell .= "JOIN procedure_report ";
                                         $spell .= "	ON procedure_result.procedure_report_id = procedure_report.procedure_report_id ";
@@ -180,7 +181,8 @@ function checkAll(bx) {
                                         $spell .= "WHERE procedure_order.patient_id = ? ";
                                         $spell .= "AND procedure_result.result IS NOT NULL ";
                                         $spell .= "AND procedure_result.result != ''";
-                                        $spell .= "ORDER BY procedure_result.result_code ASC ";
+                                        $spell .= "GROUP BY procedure_result.result_code, procedure_result.result_text ";
+                                        $spell .= "ORDER BY procedure_result.result_text ASC ";
                                         $query  = sqlStatement($spell, array($pid));
 
                                         // Select which items to view...
@@ -193,11 +195,11 @@ function checkAll(bx) {
                                                 }
                                             }
 
-                                            echo " /> " . text($myrow['value_code']) . "<br />";
+                                            echo " /> " . text($myrow['value_text']) . "<br />";
                                             $value_list[$i]['value_code'] = $myrow['value_code'];
                                             $i++;
                                             $tab++;
-                                            if ($tab == 10) {
+                                            if ($tab == 20) {
                                                 echo "</td><td>";
                                                 $tab = 0;
                                             }
